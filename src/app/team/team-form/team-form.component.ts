@@ -30,51 +30,25 @@ export class TeamFormComponent implements OnInit {
     });
   }
 
-  onSelectLogo(event: any) {
-    const logoFormControl = this.teamForm.controls['logo'];
-    console.log(event);
-    let logo: File = event.files[0];
-    logoFormControl.setValue(logo);
-    this.team.logo = logo;
-    const reader = new FileReader();
-    reader.readAsDataURL(logo);
-    reader.onload = () => {
-      console.log(reader.result);
-    };
-  }
+  // onSelectLogo(event: any) {
+  //   const logoFormControl = this.teamForm.controls['logo'];
+  //   console.log(event);
+  //   let logo: File = event.files[0];
+  //   logoFormControl.setValue(logo);
+  //   this.team.logo = logo;
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(logo);
+  //   reader.onload = () => {
+  //     console.log(reader.result);
+  //   };
+  // }
 
-  onKeyOnCountry(event: any) {
-    console.log(event);
-    console.log(this.teamForm.get('country'));
-    console.log(this.countrySelector);
+  // onRemoveLogo(event: any) {
+  //   this.team.logo = null;
+  //   const logoFormControl = this.teamForm.controls['logo'];
+  //   logoFormControl.setValue(null);
+  // }
 
-  }
-
-  onRemoveLogo(event: any) {
-    this.team.logo = null;
-    const logoFormControl = this.teamForm.controls['logo'];
-    logoFormControl.setValue(null);
-  }
-
-
-  onCountrySelected(country: Country) {
-    this.team.nationality = country.alpha3Code;
-    this.teamForm.controls['country'].setValue(country);
-    console.log(country);
-  }
-
-  onClearCountry() {
-    this.teamForm.get('country')!.setValue(null);
-    this.countrySelector.value = {
-      name: '',
-      alpha2Code: '',
-      alpha3Code: '',
-      numericCode: '',
-      callingCode: ''
-    };
-    //this.countrySelector.inputElement.value = "";
-
-  }
 
 
   onSubmit() {

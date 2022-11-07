@@ -1,0 +1,4 @@
+<p-fileUpload #imageSelector name="logo" id="logo" [customUpload]="true" required="true"
+    (onSelect)="onSelectLogo($event)" [showUploadButton]="false" [showCancelButton]="false"
+    (onRemove)="onRemoveLogo($event)" accept="image/*" [disabled]="disabled">
+</p-fileUpload>

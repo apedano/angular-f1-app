@@ -30,14 +30,15 @@
                 <div class="p-field p-grid margin-top">
                     <span class="p-float-label">
                         <h5>Team logo</h5>
-                        <p-fileUpload name="logo" id="logo" [customUpload]="true" required="true"
+                        <!-- <p-fileUpload name="logo" id="logo" [customUpload]="true" required="true"
                             (onSelect)="onSelectLogo($event)" [showUploadButton]="false" [showCancelButton]="false"
                             (onRemove)="onRemoveLogo($event)" accept="image/*">
-                        </p-fileUpload>
+                        </p-fileUpload> -->
+                        <app-image-selector formControlName="logo"></app-image-selector>
 
                     </span>
-                    <label for="float-input" class="p-error block" *ngIf="logo?.errors?.['required']">Select logo is
-                        required</label>
+                    <small for="float-input" class="p-error block" *ngIf="logo?.errors?.['required']">Select logo is
+                        required</small>
                 </div>
                 <!-- https://angular-material-extensions.github.io/select-country/ -->
                 <div class="p-field p-grid margin-top">
@@ -54,6 +55,7 @@
 
             </div>
         </div>
-        <button pButton type="submit" [disabled]="!teamForm.valid" label="Save"></button>
+        <!-- <button pButton type="submit" [disabled]="!teamForm.valid" label="Save"></button> -->
+        <button pButton type="submit" label="Save"></button>
     </div>
 </form>
