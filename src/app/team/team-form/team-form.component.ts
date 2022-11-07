@@ -53,6 +53,13 @@ export class TeamFormComponent implements OnInit {
 
   onSubmit() {
     console.log(this.teamForm);
+    const teamToUpdate = new Team(
+      this.teamForm.get('name')?.value,
+      this.teamForm.get('foundation')?.value,
+      this.teamForm.get('logo')?.value,
+      this.teamForm.get('country')?.value
+    );
+    console.log(teamToUpdate);
 
   }
 
