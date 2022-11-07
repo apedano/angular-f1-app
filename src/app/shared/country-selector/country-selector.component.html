@@ -1,1 +1,13 @@
-<p>country-selector works!</p>
+<div class="card">
+    <div class="flex align-items-baseline flex-row flex-wrap card-container gap-1" style="min-height: 60px">
+        <div class="flex justify-content-center" style="min-height: 50px">
+            <mat-select-country #c name="country" appearance="outline" label="Nationality"
+                (onCountrySelected)="onCountrySelected($event)" (keypress)="onKeyOnCountry($event)"
+                formControlName="country">
+            </mat-select-country>
+        </div>
+        <div class="flex justify-content-center" style="min-height: 30px">
+            <button pButton label="Clear" (click)="onClearCountry()"></button>
+        </div>
+    </div>
+</div>

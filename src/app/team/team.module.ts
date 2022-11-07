@@ -9,11 +9,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { TeamFormComponent } from './team-form/team-form.component';
+import { SharedModule } from "../shared/shared.module";
 
 
 @NgModule({
     declarations: [TeamFormComponent],
     imports: [
+        SharedModule,
         InputTextModule,
         CalendarModule,
         BrowserAnimationsModule,

@@ -10,18 +10,17 @@ import { ButtonModule } from 'primeng/button';
 import { TeamModule } from './team/team.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSelectCountryModule } from "@angular-material-extensions/select-country";
-import { MatError } from '@angular/material/form-field';
-import { CountrySelectorComponent } from './shared/country-selector/country-selector.component';
+import { SharedModule } from './shared/shared.module';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainMenuComponent,
-    CountrySelectorComponent
+    MainMenuComponent
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     AppRoutingModule,
     ButtonModule,
@@ -29,7 +28,7 @@ import { CountrySelectorComponent } from './shared/country-selector/country-sele
     TeamModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatSelectCountryModule.forRoot('en')
+
   ],
   providers: [],
   bootstrap: [AppComponent]
