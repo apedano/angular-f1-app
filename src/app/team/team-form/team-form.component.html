@@ -1,0 +1,63 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="teamForm">
+    <div class="form-grid">
+        <div class="card">
+            <h4>New Team</h4>
+            <div class="p-fluid">
+                <div class="p-field p-grid margin-top">
+                    <span class="p-float-label">
+                        <input pInputText formControlName="name">
+                        <label for="name">Name</label>
+                    </span>
+                    <small id="name-invalid" class="p-error block"
+                        *ngIf="name?.touched && name?.errors?.['minlength']">Name
+                        should be at least 3 chars long</small>
+                    <small id="name-invalid" class="p-error block"
+                        *ngIf="name?.touched && name?.errors?.['required']">Name
+                        is mandatory</small>
+                </div>
+                <div class="p-field p-grid margin-top">
+                    <span class="p-float-label">
+                        <p-calendar dateFormat="dd-mm-yy" name="foundation" inputId="dateformat"
+                            formControlName="foundation">
+                        </p-calendar>
+                        <label for="float-input">Foundation Date</label>
+                    </span>
+                    <small id="foundation-invalid" class="p-error block"
+                        *ngIf="foundation?.touched && foundation?.errors?.['required']">Foundation date
+                        is
+                        mandatory</small>
+                </div>
+                <div class="p-field p-grid margin-top">
+                    <span class="p-float-label">
+                        <h5>Team logo</h5>
+                        <p-fileUpload name="logo" id="logo" [customUpload]="true" required="true"
+                            (onSelect)="onSelectLogo($event)" [showUploadButton]="false" [showCancelButton]="false"
+                            (onRemove)="onRemoveLogo($event)" accept="image/*">
+                        </p-fileUpload>
+
+                    </span>
+                    <label for="float-input" class="p-error block" *ngIf="logo?.errors?.['required']">Select logo is
+                        required</label>
+                </div>
+                <!-- https://angular-material-extensions.github.io/select-country/ -->
+                <div class="p-field p-grid margin-top">
+                    <div class="grid">
+                        <div class="col-10">
+                            <mat-select-country #c name="country" appearance="outline" label="Nationality"
+                                (onCountrySelected)="onCountrySelected($event)" (keypress)="onKeyOnCountry($event)"
+                                formControlName="country">
+                            </mat-select-country>
+                        </div>
+                        <div class="col-2">
+                            <button pButton label="Clear" (click)="onClearCountry()"></button>
+                        </div>
+                    </div>
+                    <small class="p-error block" *ngIf="country?.errors?.['required']">
+                        Country is required
+                    </small>
+                </div>
+            </div>
+        </div>
+        <button pButton type="submit" [disabled]="!teamForm.valid" label="Save"></button>
+    </div>
+</form>
