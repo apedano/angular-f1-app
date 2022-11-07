@@ -43,30 +43,8 @@
                 <div class="p-field p-grid margin-top">
                     <div class="grid">
                         <div class="col">
-                            <app-country-selector></app-country-selector>
+                            <app-country-selector formControlName="country"></app-country-selector>
                         </div>
-                        <!-- <div class="col-2">
-                            <mat-select-country #c name="country" appearance="outline" label="Nationality"
-                                (onCountrySelected)="onCountrySelected($event)" (keypress)="onKeyOnCountry($event)"
-                                formControlName="country">
-                            </mat-select-country>
-                        </div>
-                        <div class="col-1 col-offset-10">
-                            <button pButton label="Clear" (click)="onClearCountry()"></button>
-                        </div> -->
-                    </div>
-                    <small class="p-error block" *ngIf="country?.errors?.['required']">
-                        Country is required
-                    </small>
-                </div>
-
-
-                <div class="p-field p-grid margin-top">
-                    <div class="grid">
-                        <div class="col-1">
-
-                        </div>
-
                     </div>
                     <small class="p-error block" *ngIf="country?.errors?.['required']">
                         Country is required

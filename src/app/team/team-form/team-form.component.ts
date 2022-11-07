@@ -26,13 +26,8 @@ export class TeamFormComponent implements OnInit {
       name: new FormControl(null, [Validators.required, Validators.minLength(3)]),
       foundation: new FormControl(null, [Validators.required]),
       logo: new FormControl(null, [Validators.required]),
-      country: new FormControl('', Validators.required)
+      country: new FormControl(null, Validators.required)
     });
-    // this.signupForm = new FormGroup({
-    //   'name': new FormControl(null),
-    //   'foundation': new FormControl(null),
-    //   'gender': new FormControl('male') //initial state
-    // });
   }
 
   onSelectLogo(event: any) {
