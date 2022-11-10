@@ -6,7 +6,7 @@ export class Team {
         return new Team();
     }
 
-    constructor(public name?: string, public foundation?: Date, public logo?: File | null, public nationality?: Country) {
+    constructor(public id?: string, public name?: string, public foundation?: Date, public logo?: string | null, public nationality?: Country) {
 
     }
 }

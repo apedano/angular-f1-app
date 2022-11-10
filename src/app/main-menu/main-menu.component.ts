@@ -16,16 +16,19 @@ export class MainMenuComponent implements OnInit {
     this.items = [
       {
         label: 'Teams',
-        items: [{
-          label: 'New',
-          icon: 'pi pi-fw pi-plus',
-          items: [
-            { label: 'Project' },
-            { label: 'Other' },
-          ]
-        },
-        { label: 'Open' },
-        { label: 'Quit' }
+        items: [
+          { label: 'All', icon: 'pi pi-fw pi-bars', routerLink: "/teams/" },
+          { label: 'New', icon: 'pi pi-fw pi-plus', routerLink: "/teams/new" },
+          { label: 'Open' },
+          { label: 'Quit' },
+          {
+            label: 'New',
+            icon: 'pi pi-fw pi-plus',
+            items: [
+              { label: 'Project' },
+              { label: 'Other' },
+            ]
+          }
         ]
       },
       {

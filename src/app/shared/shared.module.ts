@@ -7,6 +7,8 @@ import { CountrySelectorComponent } from "./country-selector/country-selector.co
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FileUploadModule } from 'primeng/fileupload';
 import { ImageSelectorComponent } from './image-selector/image-selector.component';
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthInterceptorService } from "./auth-interceptor.service";
 
 
 @NgModule({
@@ -17,6 +19,13 @@ import { ImageSelectorComponent } from './image-selector/image-selector.componen
         MatSelectCountryModule.forRoot('en'),
         FileUploadModule,
         ButtonModule
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptorService, //can be more
+            multi: true //needed for HTTP_INTERCEPTORS classes, This required setting tells Angular that HTTP_INTERCEPTORS is a token for a multiprovider that injects an array of values, rather than a single value. 
+        }
     ],
     exports: [CountrySelectorComponent, ImageSelectorComponent]
 })

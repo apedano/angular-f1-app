@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Country, MatSelectCountryComponent } from '@angular-material-extensions/select-country';
 import { Team } from '../team.model';
+import { TeamsService } from '../team.service';
 
 @Component({
   selector: 'app-team-form',
@@ -15,9 +16,7 @@ export class TeamFormComponent implements OnInit {
   private selectedCountry!: Country;
   @ViewChild('c') countrySelector!: MatSelectCountryComponent;
 
-
-
-  constructor() { }
+  constructor(private teamService: TeamsService) { }
 
   teamForm!: FormGroup;
 
@@ -30,37 +29,19 @@ export class TeamFormComponent implements OnInit {
     });
   }
 
-  // onSelectLogo(event: any) {
-  //   const logoFormControl = this.teamForm.controls['logo'];
-  //   console.log(event);
-  //   let logo: File = event.files[0];
-  //   logoFormControl.setValue(logo);
-  //   this.team.logo = logo;
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(logo);
-  //   reader.onload = () => {
-  //     console.log(reader.result);
-  //   };
-  // }
-
-  // onRemoveLogo(event: any) {
-  //   this.team.logo = null;
-  //   const logoFormControl = this.teamForm.controls['logo'];
-  //   logoFormControl.setValue(null);
-  // }
-
 
 
   onSubmit() {
     console.log(this.teamForm);
     const teamToUpdate = new Team(
+      undefined,
       this.teamForm.get('name')?.value,
       this.teamForm.get('foundation')?.value,
       this.teamForm.get('logo')?.value,
       this.teamForm.get('country')?.value
     );
     console.log(teamToUpdate);
-
+    this.teamService.createAndStore(teamToUpdate);
   }
 
   get name() { return this.teamForm.get('name'); }
