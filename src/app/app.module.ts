@@ -6,20 +6,31 @@ import { AppComponent } from './app.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 //PRIME-NG
 import { MenubarModule } from 'primeng/menubar';
+
 import { ButtonModule } from 'primeng/button';
 import { TeamModule } from './team/team.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
+import { SeasonFormComponent } from './season/season-form/season-form.component';
+import { DriverFormComponent } from './driver/driver-form/driver-form.component';
+import { TrackFormComponent } from './track/track-form/track-form.component';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CardModule } from 'primeng/card';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainMenuComponent
+    MainMenuComponent,
+    SeasonFormComponent,
+    DriverFormComponent,
+    TrackFormComponent
   ],
   imports: [
+    InputNumberModule,
+    CardModule,
     SharedModule,
     BrowserModule,
     AppRoutingModule,

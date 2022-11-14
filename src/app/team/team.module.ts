@@ -5,7 +5,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSelectCountryModule } from "@angular-material-extensions/select-country";
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -14,6 +13,7 @@ import { SharedModule } from "../shared/shared.module";
 import { RouterModule, Routes } from "@angular/router";
 import { TeamListComponent } from './team-list/team-list.component';
 import { TeamItemComponent } from './team-list/team-item/team-item.component';
+
 
 
 const teamsRoutes: Routes = [
@@ -38,7 +38,6 @@ const teamsRoutes: Routes = [
         CalendarModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        MatSelectCountryModule,
         ReactiveFormsModule
     ],
     exports: [TeamFormComponent]

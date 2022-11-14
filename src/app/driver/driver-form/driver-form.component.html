@@ -1,0 +1,26 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="driverForm">
+    <div class="form-grid">
+        <div class="card">
+            <div class="field">
+                <label for="Name">Name</label>
+                <input id="name" type="text" fromControlName="name"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div class="field">
+                <label for="Name">Country</label>
+                <app-country-selector id="state" name="state" formControlName="state">
+                </app-country-selector>
+            </div>
+            <div class="field">
+                <label for="Name">First year</label>
+                <p-slider formControlName="firstYear"></p-slider>
+            </div>
+            <div class="field">
+                <label for="Name">Image</label>
+                <app-image-selector formControlName="image"></app-image-selector>
+            </div>
+
+        </div>
+    </div>
+
+</form>

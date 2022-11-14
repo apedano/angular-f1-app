@@ -8,6 +8,7 @@ export class AuthInterceptorService implements HttpInterceptor {
      * @param {HttpHandler} next - It is a function that will forward the request to next step towards the outside api
      */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        // console.log('Inside auth interceptor...', req);
         if (req.url.includes('firebasedatabase.app')) {
             console.log('Inside auth interceptor for firebase calls...');
             const modifiedReq = req.clone(

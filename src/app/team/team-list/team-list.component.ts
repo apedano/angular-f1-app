@@ -18,7 +18,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.teamsSubscription = this.teamService.teamsSubject.subscribe(teamArray => {
+    this.teamsSubscription = this.teamService.allValuesSubject.subscribe(teamArray => {
       this.teams = teamArray;
       this.loading = false;
     });

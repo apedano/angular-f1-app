@@ -1,21 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, OnInit, Self, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-image-selector',
   templateUrl: './image-selector.component.html',
   styleUrls: ['./image-selector.component.css'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: ImageSelectorComponent
-    }
-  ]
+  // providers: [
+  //   {
+  //     provide: NG_VALUE_ACCESSOR,
+  //     multi: true,
+  //     useExisting: ImageSelectorComponent
+  //   }
+  // ]
 })
 export class ImageSelectorComponent implements ControlValueAccessor, OnInit {
-
-  constructor() { }
 
   touched: boolean = false;
   disabled: boolean = false;
@@ -25,6 +23,10 @@ export class ImageSelectorComponent implements ControlValueAccessor, OnInit {
   onTouched = () => { };
 
   @ViewChild('imageSelector', { static: true }) imageUploader!: ImageSelectorComponent;
+
+  constructor(@Self() public controlDir: NgControl) {
+    controlDir.valueAccessor = this;
+  }
 
 
   writeValue(fileContent: string | ArrayBuffer | null): void {

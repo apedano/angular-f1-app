@@ -1,18 +1,18 @@
 import { Country, MatSelectCountryComponent } from '@angular-material-extensions/select-country';
-import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, Input, OnInit, Self, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-country-selector',
   templateUrl: './country-selector.component.html',
   styleUrls: ['./country-selector.component.css'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: CountrySelectorComponent
-    }
-  ]
+  // providers: [
+  //   {
+  //     provide: NG_VALUE_ACCESSOR,
+  //     multi: true,
+  //     useExisting: forwardRef(() => CountrySelectorComponent)
+  //   }
+  // ]
 })
 export class CountrySelectorComponent implements ControlValueAccessor, OnInit {
 
@@ -38,7 +38,9 @@ export class CountrySelectorComponent implements ControlValueAccessor, OnInit {
   //we need it because we use it in the onInit
   @ViewChild('c', { static: true }) countrySelector!: MatSelectCountryComponent;
 
-  constructor() { }
+  constructor(@Self() public controlDir: NgControl) {
+    controlDir.valueAccessor = this;
+  }
 
   ngOnInit(): void {
     if (this.selectedCountry) {

@@ -1,7 +1,7 @@
 import { HttpEvent } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Country, MatSelectCountryComponent } from '@angular-material-extensions/select-country';
+import { MatSelectCountryComponent } from '@angular-material-extensions/select-country';
 import { Team } from '../team.model';
 import { TeamsService } from '../team.service';
 
@@ -13,8 +13,7 @@ import { TeamsService } from '../team.service';
 export class TeamFormComponent implements OnInit {
 
   team: Team = Team.empty();
-  private selectedCountry!: Country;
-  @ViewChild('c') countrySelector!: MatSelectCountryComponent;
+
 
   constructor(private teamService: TeamsService) { }
 

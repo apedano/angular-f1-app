@@ -32,6 +32,20 @@ export class MainMenuComponent implements OnInit {
         ]
       },
       {
+        label: 'Tracks',
+        items: [
+          { label: 'All', icon: 'pi pi-fw pi-bars', routerLink: "/tracks/" },
+          { label: 'New', icon: 'pi pi-fw pi-plus', routerLink: "/tracks/new" }
+        ]
+      },
+      {
+        label: 'Drivers',
+        items: [
+          { label: 'All', icon: 'pi pi-fw pi-bars', routerLink: "/drivers/" },
+          { label: 'New', icon: 'pi pi-fw pi-plus', routerLink: "/tracks/new" }
+        ]
+      },
+      {
         label: 'Edit',
         icon: 'pi pi-fw pi-pencil',
         items: [

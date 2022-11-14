@@ -9,12 +9,22 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ImageSelectorComponent } from './image-selector/image-selector.component';
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptorService } from "./auth-interceptor.service";
+import { YearSelectorComponent } from './year-selector/year-selector.component';
+import { SliderModule } from "primeng/slider";
+import { DataViewModule } from 'primeng/dataview';
+import { AssetImageSelectorComponent } from './asset-image-selector/asset-image-selector.component';
+import { CommonModule } from "@angular/common";
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
-    declarations: [CountrySelectorComponent, ImageSelectorComponent],
+    declarations: [CountrySelectorComponent, ImageSelectorComponent, YearSelectorComponent, AssetImageSelectorComponent],
     imports: [
         FormsModule,
+        CommonModule,
+        SliderModule,
+        CardModule,
+        DataViewModule,
         ReactiveFormsModule,
         MatSelectCountryModule.forRoot('en'),
         FileUploadModule,
@@ -27,6 +37,6 @@ import { AuthInterceptorService } from "./auth-interceptor.service";
             multi: true //needed for HTTP_INTERCEPTORS classes, This required setting tells Angular that HTTP_INTERCEPTORS is a token for a multiprovider that injects an array of values, rather than a single value. 
         }
     ],
-    exports: [CountrySelectorComponent, ImageSelectorComponent]
+    exports: [CountrySelectorComponent, ImageSelectorComponent, YearSelectorComponent, AssetImageSelectorComponent]
 })
 export class SharedModule { }

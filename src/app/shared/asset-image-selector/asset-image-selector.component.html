@@ -1,0 +1,23 @@
+<div class="field">
+    <label for="Name">Image Name</label>
+    <input id="name" type="text" [(ngModel)]="inputValue" (input)="onInputChange($event)" [disabled]="isDisabled"
+        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+</div>
+<!-- <ng-container *ngIf="imageName.value;else #noImage"> -->
+<ng-container *ngIf="isCurrentValueValid;else noImage">
+    <div class="grid">
+        <div *ngFor="let url of currentValue; index as i;" class="col align-content-center">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <div class="align-content-center" style="width:100%; text-align: center;">Image: <i>{{url}}</i>
+                    </div>
+                </ng-template>
+                <div style="width:100%; text-align: center;"><img [src]="url"
+                        style="max-width: 400px; max-height: 400px;"></div>
+            </p-card>
+        </div>
+    </div>
+</ng-container>
+<ng-template #noImage>
+    <div>Not all images have been found with the current value in the input</div>
+</ng-template>
