@@ -98,6 +98,19 @@ export abstract class GenericService<T extends IdEntity> {
             );
     }
 
+    public delete(entity: T): Observable<any> {
+        return this.httpClient.delete(this.getApiFullUrl() + '/' + entity.id + '.json')
+            .pipe(map(() => {
+                this.refreshVallValues();
+            }),
+                catchError(errorRes => {
+                    //error handling code goes here
+                    //here we return the observable sending the error 
+                    //to the subscribers
+                    return throwError(() => errorRes);
+                }));
+    }
+
     protected abstract mapToEntity(id: string, reponseData: any): T;
 
     // deleteAll(): Observable<any> {

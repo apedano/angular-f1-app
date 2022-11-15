@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Team } from '../../team.model';
+import { TeamsService } from '../../team.service';
 
 @Component({
   selector: 'app-team-item',
@@ -16,7 +17,7 @@ export class TeamItemComponent implements OnInit {
   flagUrlTemplate!: string;
   logoUrlTemplate!: string;
 
-  constructor(private router: Router, private currentRoute: ActivatedRoute) { }
+  constructor(private teamService: TeamsService, private router: Router, private currentRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.teamAlpha2Code = this.team.nationality?.alpha2Code;
@@ -29,7 +30,7 @@ export class TeamItemComponent implements OnInit {
   }
 
   onDeleteTriggered() {
-    console.log('Delete', this.team.id);
+    this.teamService.delete(this.team).subscribe(() => this.router.navigate(['/teams']));
   }
 
 }
