@@ -35,6 +35,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         ConfirmDialogModule,
         MatSelectCountryModule.forRoot('en'),
         FileUploadModule,
+        ReactiveFormsModule,
         ButtonModule
     ],
     providers: [

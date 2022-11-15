@@ -61,14 +61,15 @@ export class AssetImageSelectorComponent implements ControlValueAccessor, OnInit
   // }
 
   private fileExists(inputUrl: string): Observable<void | { result: Boolean, url: string }> {
-    return this.httpClient.get(inputUrl, { observe: 'response' }).pipe(
-      map(() => { true; inputUrl }),
-      catchError((err: HttpErrorResponse) => {
-        console.log('fileExists error', err);
-        let isStatusOk = err.status === 200;
-        return of({ result: isStatusOk, url: inputUrl });
-      })
-    );
+    return this.httpClient.get(inputUrl, { observe: 'response' })
+      .pipe(
+        map(() => { return { result: true, url: inputUrl } }),
+        catchError((err: HttpErrorResponse) => {
+          //console.log('fileExists error', err);
+          let isStatusOk = err.status === 200;
+          return of({ result: isStatusOk, url: inputUrl });
+        })
+      );
   }
 
   imageInAssets(url: string, callback: any): void {
@@ -93,7 +94,7 @@ export class AssetImageSelectorComponent implements ControlValueAccessor, OnInit
     let urlsExistObs: Observable<void | { result: Boolean, url: string }>[] =
       urlsToCheck.map(url => this.fileExists(url));
     forkJoin(urlsExistObs).subscribe((results: (void | { result: Boolean, url: string })[]) => {
-      console.log('Exists call results', results)
+      // console.log('Exists call results', results)
       if (results.every(result => result?.result === true)) {
         this.currentValue = urlsToCheck;
         this.isCurrentValueValid = true;

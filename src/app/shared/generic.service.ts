@@ -81,10 +81,10 @@ export abstract class GenericService<T extends IdEntity> {
         return this.httpClient.get<{ [key: string]: T }>(
             this.getApiFullUrl() + '.json').pipe(
                 map((originalResponseData: { [key: string]: any }) => {
-                    console.log('originalResponseData from fethAll call', originalResponseData);
+                    // console.log('originalResponseData from fethAll call', originalResponseData);
                     const valuesArray: T[] = [];
                     for (const idKey in originalResponseData) {
-                        console.log('response data T', originalResponseData[idKey]);
+                        // console.log('response data T', originalResponseData[idKey]);
                         valuesArray.push(this.mapToEntity(idKey, originalResponseData[idKey]))
                     }
                     return valuesArray

@@ -55,12 +55,11 @@ export class TeamFormComponent implements OnInit {
 
   onSubmit() {
     //FIXME: use the existing this.team instead
-
     this.team.name = this.name?.value;
     this.team.foundation = this.foundation?.value;
     this.team.logoName = this.logo?.value;
     this.team.nationality = this.country?.value;
-    console.log(this.teamForm);
+    //console.log(this.teamForm);
     this.teamService.createOrUpdate(this.team).subscribe(this.createAndStoreObserver);
   }
 

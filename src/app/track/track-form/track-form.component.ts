@@ -31,26 +31,6 @@ export class TrackFormComponent implements OnInit {
     console.log('FirstYear' + this.trackForm.get('firstYear')?.value);
   }
 
-  imageInAssets(url: string, callback: any): void {
-    var img = new Image();
-    img.onload = function () { callback(true); };
-    img.onerror = function () { callback(false); };
-    img.src = url;
-  }
-
-
-
-  onImageNameChange(event: any): void {
-    console.log(event, this.trackForm.get('imageName'));
-    this.imageInAssets('assets/img/tracks/' + this.trackForm.get('imageName')?.value + '_large.png', (exists: boolean) => {
-      this.imageExists = exists
-      if (this.imageExists) {
-        this.imageUrl = 'assets/img/tracks/' + this.trackForm.get('imageName')?.value + '_large.png'
-      }
-    });
-  }
-
-
 
 
 
