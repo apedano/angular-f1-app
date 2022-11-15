@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit, Output } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, Input, OnInit, Output, Self } from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { catchError, forkJoin, map, Observable, of } from 'rxjs';
 
 
@@ -22,26 +22,21 @@ export class AssetImageSelectorComponent implements ControlValueAccessor, OnInit
   isCurrentValueValid: boolean = false;
 
   onTouched = () => { };
-  onChange = (imageUrls?: string[] | null) => { };
+  onChange = (logoName?: string | null) => { };
 
   touched: boolean = false;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(@Self() public controlDir: NgControl, private httpClient: HttpClient) {
+    controlDir.valueAccessor = this;
+  }
 
 
-  writeValue(obj: any): void {
-    console.log('AssetImageSelectorComponent writing value', obj);
+  writeValue(value: string): void {
+    this.inputValue = value;
+    console.log('AssetImageSelectorComponent writing value', this.inputValue);
     this.markAsTouched();
-    if (obj === null) {
-      this.isCurrentValueValid = false;
-      this.onChange();
-      this.currentValue = null;
-    } else {
-      this.isCurrentValueValid = true;
-      this.currentValue = obj;
-      this.onChange(this.currentValue);
-    }
-    //FIXME: complete
+    this.refreshValues(false);
+    this.onChange(value);
   }
 
   registerOnChange(fn: any): void {
@@ -66,7 +61,7 @@ export class AssetImageSelectorComponent implements ControlValueAccessor, OnInit
   // }
 
   private fileExists(inputUrl: string): Observable<void | { result: Boolean, url: string }> {
-    return this.httpClient.get(inputUrl).pipe(
+    return this.httpClient.get(inputUrl, { observe: 'response' }).pipe(
       map(() => { true; inputUrl }),
       catchError((err: HttpErrorResponse) => {
         console.log('fileExists error', err);
@@ -76,9 +71,6 @@ export class AssetImageSelectorComponent implements ControlValueAccessor, OnInit
     );
   }
 
-
-
-
   imageInAssets(url: string, callback: any): void {
     var img = new Image();
     img.onload = function () { callback(true); };
@@ -87,20 +79,28 @@ export class AssetImageSelectorComponent implements ControlValueAccessor, OnInit
   }
 
 
-  onInputChange(event: any): void {
+  onInputChange(): void {
+    this.refreshValues(true);
+  }
+
+  refreshValues(doWriteValue: boolean): void {
     this.currentValue = [];
     this.isCurrentValueValid = false;
     let urlsToCheck: string[] = this.urlPartsArray
       .map((urlParts: string[]) => {
         return urlParts[0] + this.inputValue + urlParts[1];
       });
-    let urlsExistObs: Observable<void | { result: Boolean, url: string }>[] = urlsToCheck
-      .map(url => this.fileExists(url));
+    let urlsExistObs: Observable<void | { result: Boolean, url: string }>[] =
+      urlsToCheck.map(url => this.fileExists(url));
     forkJoin(urlsExistObs).subscribe((results: (void | { result: Boolean, url: string })[]) => {
       console.log('Exists call results', results)
-      const valueToWrite = results.every(result => result?.result === true) ? urlsToCheck : null;
-      console.log('writing value', valueToWrite);
-      this.writeValue(valueToWrite);
+      if (results.every(result => result?.result === true)) {
+        this.currentValue = urlsToCheck;
+        this.isCurrentValueValid = true;
+      }
+      if (doWriteValue) {
+        this.writeValue(this.inputValue);
+      }
     });
   }
 

@@ -1,20 +1,29 @@
 import { HttpClient, HttpErrorResponse, HttpEventType } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, firstValueFrom, map, Observable, Observer, Subject, Subscription, tap, throwError } from "rxjs";
 import { GenericService } from "../shared/generic.service";
 import { Team } from "./team.model";
 
 @Injectable({ providedIn: 'root' })
 export class TeamsService extends GenericService<Team> {
 
-    protected getApiPath(): string {
-        return 'teams';
-    }
-
     constructor(httpClient: HttpClient) {
         super(httpClient);
     }
 
+    protected mapToEntity(id: string, reponseData: any): Team {
+
+        //public id?: string, public name?: string, public foundation?: Date, public logo?: string, public nationality?: Country
+        return new Team(id,
+            reponseData.name,
+            new Date(reponseData.foundation),
+            reponseData.logoName,
+            reponseData.nationality
+        );
+    }
+
+    protected getApiPath(): string {
+        return 'teams';
+    }
 
     // readonly TEAMS_URL: string = 'https://angular-tutorial-rest-api-default-rtdb.europe-west1.firebasedatabase.app/teams.json';
 

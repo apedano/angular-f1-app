@@ -1,23 +1,30 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { BehaviorSubject, catchError, map, Observable, Observer, Subject, Subscription, throwError } from "rxjs";
+import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { BehaviorSubject, catchError, map, Observable, Observer, skip, Subject, Subscription, take, throwError } from "rxjs";
+import { IdEntity } from "./id-entity.model";
 
-export abstract class GenericService<T> {
+export abstract class GenericService<T extends IdEntity> {
 
     readonly FIREBASE_BASE_URL: string = 'https://angular-tutorial-rest-api-default-rtdb.europe-west1.firebasedatabase.app/';
 
-    errorSubject: Subject<string> = new Subject();
-    allValuesSubject: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
+    public errorSubject: Subject<string> = new Subject();
+    public allValuesSubject: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
+    isAllValueSubjectCalledAlready: boolean = false;
+
+    constructor(private httpClient: HttpClient) {
+        this.refreshVallValues();
+    }
 
     protected abstract getApiPath(): string;
 
     protected getApiFullUrl(): string {
-        return this.FIREBASE_BASE_URL + this.getApiPath() + '.json'
+        return this.FIREBASE_BASE_URL + this.getApiPath()
     }
 
-    fetchAllSubscription: Subscription;
+    fetchAllSubscription!: Subscription;
     private fetchAllObserver: Partial<Observer<T[]>> = {
         next: allValues => {
             this.allValuesSubject.next(allValues);
+            this.isAllValueSubjectCalledAlready = true;
         },
         error: err => {
             const errorInstance = <HttpErrorResponse>err;
@@ -26,50 +33,62 @@ export abstract class GenericService<T> {
     };
 
 
-    constructor(private httpClient: HttpClient) {
+    protected refreshVallValues() {
+        this.fetchAllSubscription?.unsubscribe();
         this.fetchAllSubscription = this.fetchAll().subscribe(this.fetchAllObserver);
     }
 
-    refreshVallValues() {
-        this.fetchAllSubscription.unsubscribe();
-        this.fetchAllSubscription = this.fetchAll().subscribe(this.fetchAllObserver);
+    public createOrUpdate(obj: T): Observable<HttpResponse<{ name: string }>> {
+        let response!: Observable<any>;
+        if (obj.id) { //update
+            let obj_deep_copy = JSON.parse(JSON.stringify(obj));
+            obj_deep_copy.id = null;
+            response = this.httpClient.patch(this.getApiFullUrl() + '/' + obj.id + '.json', obj_deep_copy);
+        } else {
+            response = this.httpClient.post<{ name: string; }>(
+                this.getApiFullUrl() + '.json',
+                obj, { observe: 'response' });
+        }
+
+        return response.pipe(map((responseData: HttpResponse<{ name: string; }>) => {
+            this.refreshVallValues();
+            return responseData;
+        }),
+            catchError(errorRes => {
+                //error handling code goes here
+                //here we return the observable sending the error 
+                //to the subscribers
+                return throwError(() => errorRes);
+            }));
     }
 
-    createAndStore(newObj: T) {
-        this.httpClient.post<{ name: string }>(
-            this.getApiFullUrl(), //the url
-            newObj, //body, Angular will transform in json
-            {
-                observe: 'response' //default body 
-            }
+    public getById(id: string): Observable<T> {
+        let skipN = 0;
+        if (!this.isAllValueSubjectCalledAlready) {
+            //the subject will emit the intial empty value first
+            this.isAllValueSubjectCalledAlready = true;
+            skipN = 1;
+        }
+        return this.allValuesSubject.pipe(
+            skip(skipN),
+            map((values: T[]) => values.filter(v => v.id === id)[0]),
+        )
 
-        ).subscribe({
-            next: responseData => { //
-                this.refreshVallValues()
-                console.log(responseData);
-            },
-            error: err => {
-                this.errorSubject.next(err.message);
-            }
-        });
     }
 
-    fetchAll(): Observable<T[]> {
+    private fetchAll(): Observable<T[]> {
         console.log('Refreshing team cache');
         return this.httpClient.get<{ [key: string]: T }>(
-            this.getApiFullUrl()).pipe(
-                map((originalResponseData: { [key: string]: T }) => {
+            this.getApiFullUrl() + '.json').pipe(
+                map((originalResponseData: { [key: string]: any }) => {
                     console.log('originalResponseData from fethAll call', originalResponseData);
                     const valuesArray: T[] = [];
                     for (const idKey in originalResponseData) {
-                        valuesArray.push({
-                            ...originalResponseData[idKey], //we map all the key,value couples of originalResponseData[key] in the new object
-                            id: idKey //and we also add the id as the name we get from the firebase object
-                        });
+                        console.log('response data T', originalResponseData[idKey]);
+                        valuesArray.push(this.mapToEntity(idKey, originalResponseData[idKey]))
                     }
                     return valuesArray
-                })
-                ,
+                }),
                 catchError(errorRes => {
                     //error handling code goes here
                     //here we return the observable sending the error 
@@ -78,6 +97,8 @@ export abstract class GenericService<T> {
                 })
             );
     }
+
+    protected abstract mapToEntity(id: string, reponseData: any): T;
 
     // deleteAll(): Observable<any> {
     //     return this.httpClient.delete(

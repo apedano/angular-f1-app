@@ -10,7 +10,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // console.log('Inside auth interceptor...', req);
         if (req.url.includes('firebasedatabase.app')) {
-            console.log('Inside auth interceptor for firebase calls...');
+            console.log('Inside auth interceptor for firebase calls...', req);
             const modifiedReq = req.clone(
                 {
                     url: req.url,

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Team } from '../../team.model';
 
 @Component({
@@ -11,24 +12,24 @@ export class TeamItemComponent implements OnInit {
 
   @Input()
   team!: Team;
-  teamThumbnail: any;
   teamAlpha2Code: string | undefined;
   flagUrlTemplate!: string;
+  logoUrlTemplate!: string;
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private router: Router, private currentRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.teamThumbnail = this.sanitizer.bypassSecurityTrustUrl('' + this.team.logo);
     this.teamAlpha2Code = this.team.nationality?.alpha2Code;
-    this.flagUrlTemplate = 'assets/svg-country-flags/svg/' + this.team.nationality?.alpha2Code.toLowerCase() + '.svg'
-    // let logo: any = this.team.logo;
-    // // logoFormControl.setValue(logo);
-    // // this.team.logo = logo;
-    // const reader = new FileReader();
-    // reader.readAsDataURL(logo);
-    // reader.onload = () => {
-    //   this.teamThumbnail = this.sanitizer.bypassSecurityTrustUrl('' + reader.result);
-    // };
+    this.flagUrlTemplate = 'assets/svg-country-flags/svg/' + this.team.nationality?.alpha2Code.toLowerCase() + '.svg';
+    this.logoUrlTemplate = 'assets/img/teams/' + this.team.logoName! + '.jpg';
+  }
+
+  onEditTriggered() {
+    this.router.navigate(['./', this.team.id, 'edit'], { relativeTo: this.currentRoute });
+  }
+
+  onDeleteTriggered() {
+    console.log('Delete', this.team.id);
   }
 
 }
