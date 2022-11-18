@@ -4,9 +4,10 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observer } from "rxjs";
 
+
 export abstract class GenericFormComponent<T extends IdEntity> {
 
-    protected entity: T;
+    protected entity!: T;
     protected loading: boolean = true;
     protected entityForm!: FormGroup;
 
@@ -21,7 +22,6 @@ export abstract class GenericFormComponent<T extends IdEntity> {
 
     constructor(private genericService: GenericService<T>, private router: Router) { }
 
-
     initEntity(currentRoute: ActivatedRoute) {
         currentRoute.params
             .subscribe(
@@ -33,6 +33,7 @@ export abstract class GenericFormComponent<T extends IdEntity> {
                             this.onEntityLoaded();
                         });
                     } else {
+                        this.entity = this.emptyEntity();
                         this.onEntityLoaded();
                     }
                 }
@@ -44,15 +45,17 @@ export abstract class GenericFormComponent<T extends IdEntity> {
         this.loading = false;
     }
 
+    protected abstract emptyEntity(): T;
+
     protected abstract initEntityForm(): FormGroup;
 
     protected onSubmit() {
         this.mapFormToEntity();
-        //console.log(this.teamForm);
+        console.log('entityForm', this.entityForm);
         this.genericService.createOrUpdate(this.entity).subscribe(this.createAndStoreObserver);
     }
 
-    protected abstract mapFormToEntity();
+    protected abstract mapFormToEntity(): void;
 
     protected abstract getRedirectUrlAfterSave(): any[];
 

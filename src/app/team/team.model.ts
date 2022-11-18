@@ -10,4 +10,7 @@ export class Team implements IdEntity {
     constructor(public id?: string, public name?: string, public foundation?: Date, public logoName?: string, public nationality?: Country) {
 
     }
+    empty(): IdEntity {
+        return new Team();
+    }
 }

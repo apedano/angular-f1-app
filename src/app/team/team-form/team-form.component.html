@@ -1,5 +1,5 @@
 <div *ngIf="loading">Loading...</div>
-<form (ngSubmit)="onSubmit()" [formGroup]="teamForm" *ngIf="!loading">
+<form (ngSubmit)="onSubmit()" [formGroup]="entityForm" *ngIf="!loading">
     <div class="form-grid">
         <div class="card">
             <h4>New Team</h4>
@@ -52,6 +52,6 @@
                 </div>
             </div>
         </div>
-        <button pButton type="submit" [disabled]="!teamForm.valid" label="Save"></button>
+        <button pButton type="submit" [disabled]="!entityForm.valid" label="Save"></button>
     </div>
 </form>

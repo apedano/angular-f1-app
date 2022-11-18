@@ -1,50 +1,59 @@
-<h2>Add new track</h2>
-<form (ngSubmit)="onSubmit()" [formGroup]="trackForm">
-    <div class="form-grid">
-        <div class="card">
-            <div class="field">
-                <label for="Name">Name</label>
-                <input id="name" type="text" fromControlName="name"
-                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                <small class="p-error block" *ngIf="name?.errors?.['required']">
-                    Name is required
-                </small>
-            </div>
-            <div class="field">
-                <label for="Name">Country</label>
-                <app-country-selector id="state" name="state" formControlName="state">
-                </app-country-selector>
-                <small class="p-error block" *ngIf="state?.errors?.['required']">
-                    Country is required
-                </small>
-            </div>
-            <div class="field">
-                <label for="Name">Length </label>
+<div *ngIf="loading">Loading...</div>
+<ng-container *ngIf="!loading">
+    <h2>Add new track</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="entityForm">
+        <div class="form-grid">
+            <div class="card">
                 <div class="field">
-                    <p-inputNumber formControlName="length" mode="decimal" [minFractionDigits]="3" suffix=" Km">
-                    </p-inputNumber>
-                    <small class="p-error block" *ngIf="length?.errors?.['required']">
-                        Length is required
+                    <label for="Name">Name</label>
+                    <span class="p-float-label">
+                        <input pInputText formControlName="name" style="width: 100%;">
+                        <label for="name">Name</label>
+                    </span>
+                    <small id="name-invalid" class="p-error block"
+                        *ngIf="name?.touched && name?.errors?.['minlength']">Name
+                        should be at least 3 chars long</small>
+                    <small id="name-invalid" class="p-error block"
+                        *ngIf="name?.touched && name?.errors?.['required']">Name
+                        is mandatory</small>
+                </div>
+                <div class="field">
+                    <label for="Name">Country</label>
+                    <app-country-selector id="state" name="state" formControlName="state">
+                    </app-country-selector>
+                    <small class="p-error block" *ngIf="state?.errors?.['required']">
+                        Country is required
                     </small>
                 </div>
-            </div>
-            <div class="field">
-                <label for="firstYear">First year</label>
-                <app-year-selector formControlName="firstYear"></app-year-selector>
-                <small class="p-error block" *ngIf="firstYear?.errors?.['required']">
-                    First year is required
-                </small>
-            </div>
-            <div class="field">
-                <app-asset-image-selector formControlName="imageName"
-                    [urlPartsArray]="[['assets/img/tracks/', '_large.png'],['assets/img/tracks/','_small.png']]">
-                </app-asset-image-selector>
-                <small class="p-error block" *ngIf="imageName?.errors?.['required']">
-                    Images are required
-                </small>
-            </div>
+                <div class="field">
+                    <label for="Name">Length </label>
+                    <div class="field">
+                        <p-inputNumber formControlName="length" mode="decimal" [minFractionDigits]="3" suffix=" Km">
+                        </p-inputNumber>
+                        <small class="p-error block" *ngIf="length?.errors?.['required']">
+                            Length is required
+                        </small>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="firstYear">First year</label>
+                    <app-year-selector formControlName="firstYear"></app-year-selector>
+                    <small class="p-error block" *ngIf="firstYear?.errors?.['required']">
+                        First year is required
+                    </small>
+                </div>
+                <div class="field">
+                    <app-asset-image-selector formControlName="imageName"
+                        [urlPartsArray]="[['assets/img/tracks/', '_large.png'],['assets/img/tracks/','_small.png']]">
+                    </app-asset-image-selector>
+                    <small class="p-error block" *ngIf="imageName?.errors?.['required']">
+                        Images are required
+                    </small>
+                </div>
 
+            </div>
         </div>
-    </div>
+        <button pButton type="submit" [disabled]="!entityForm.valid" label="Save"></button>
 
-</form>
+    </form>
+</ng-container>

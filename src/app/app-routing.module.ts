@@ -3,15 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { DriverFormComponent } from './driver/driver-form/driver-form.component';
 import { TeamFormComponent } from './team/team-form/team-form.component';
 import { TrackFormComponent } from './track/track-form/track-form.component';
+import { TrackListComponent } from './track/track-list/track-list.component';
 
 const routes: Routes = [
   { path: '', component: TeamFormComponent },
   {
     path: 'tracks', children: [
-      { path: '', component: TrackFormComponent },
-      { path: 'new', component: TeamFormComponent }, //we put it before the id so it will have precedence in the parse of the route
+      { path: '', component: TrackListComponent },
+      { path: 'new', component: TrackFormComponent }, //we put it before the id so it will have precedence in the parse of the route
       // { path: ':id', component: TeamFormComponent },
-      // { path: ':id/edit', component: TeamFormComponent }
+      { path: ':id/edit', component: TrackFormComponent }
     ]
   },
   {

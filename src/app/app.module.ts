@@ -17,6 +17,9 @@ import { DriverFormComponent } from './driver/driver-form/driver-form.component'
 import { TrackFormComponent } from './track/track-form/track-form.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { TrackListComponent } from './track/track-list/track-list.component';
+import { TableModule } from 'primeng/table';
 
 
 
@@ -26,11 +29,14 @@ import { CardModule } from 'primeng/card';
     MainMenuComponent,
     SeasonFormComponent,
     DriverFormComponent,
-    TrackFormComponent
+    TrackFormComponent,
+    TrackListComponent
   ],
   imports: [
     InputNumberModule,
+    TableModule,
     CardModule,
+    InputTextModule,
     SharedModule,
     BrowserModule,
     AppRoutingModule,

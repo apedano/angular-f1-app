@@ -1,0 +1,40 @@
+<p-table [value]="entities" [tableStyle]="{'min-width': '60rem'}">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            Products
+            <p-button icon="pi pi-refresh"></p-button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th colspan="2">Country</th>
+            <th>Track</th>
+            <th>Length</th>
+            <th>FirstYear</th>
+            <th> Ops </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-track>
+        <tr>
+            <td>{{track.name}}</td>
+            <td><img [src]="'assets/svg-country-flags/svg/' + track.country.alpha2Code.toLowerCase() + '.svg'"
+                    [alt]="track.country.name" width="50" class="shadow-4" /></td>
+            <td>{{track.country.name}}</td>
+            <td><img [src]="'assets/img/tracks/' + track.imageName + '_small.png'" [alt]="track.country.name"
+                    width="100" class="shadow-4" /></td>
+
+            <td>{{track.length}} Km</td>
+            <td>{{track.firstYear}}</td>
+            <td>
+                <app-entity-toolbar (onEdit)="onEditTriggered(track)" (onDelete)="onDeleteTriggered(track)"
+                    [entityName]="track.name" style="padding: 1em;"></app-entity-toolbar>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <!-- <div class="flex align-items-center justify-content-between">
+            In total there are {{products ? products.length : 0 }} products.
+        </div> -->
+    </ng-template>
+</p-table>

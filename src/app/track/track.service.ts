@@ -17,7 +17,7 @@ export class TrackService extends GenericService<Track> {
     protected mapToEntity(id: string, reponseData: any): Track {
 
         return new Track(reponseData.name,
-            reponseData.nationality,
+            reponseData.country,
             reponseData.length,
             reponseData.firstYear,
             reponseData.imageName,
