@@ -12,7 +12,6 @@ import { TeamModule } from './team/team.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
-import { SeasonFormComponent } from './season/season-form/season-form.component';
 import { DriverFormComponent } from './driver/driver-form/driver-form.component';
 import { TrackFormComponent } from './track/track-form/track-form.component';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -20,6 +19,11 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { TrackListComponent } from './track/track-list/track-list.component';
 import { TableModule } from 'primeng/table';
+import { CarFormComponent } from './car/car-form/car-form.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { CarListComponent } from './car/car-list/car-list.component';
+import { CarItemComponent } from './car/car-list/car-item/car-item.component';
+import { DataViewModule } from 'primeng/dataview';
 
 
 
@@ -27,13 +31,17 @@ import { TableModule } from 'primeng/table';
   declarations: [
     AppComponent,
     MainMenuComponent,
-    SeasonFormComponent,
     DriverFormComponent,
     TrackFormComponent,
-    TrackListComponent
+    TrackListComponent,
+    CarFormComponent,
+    CarListComponent,
+    CarItemComponent
   ],
   imports: [
     InputNumberModule,
+    DropdownModule,
+    DataViewModule,
     TableModule,
     CardModule,
     InputTextModule,

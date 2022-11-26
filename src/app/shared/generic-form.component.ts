@@ -2,7 +2,7 @@ import { IdEntity } from "./id-entity.model";
 import { GenericService } from "./generic.service";
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observer } from "rxjs";
+import { first, Observable, Observer } from "rxjs";
 
 
 export abstract class GenericFormComponent<T extends IdEntity> {
@@ -41,13 +41,19 @@ export abstract class GenericFormComponent<T extends IdEntity> {
     }
 
     private onEntityLoaded(): void {
-        this.entityForm = this.initEntityForm();
-        this.loading = false;
+        this.initEntityForm()
+            .pipe(first()) //unsibsribe automatically after the first observed value
+            .subscribe((form: FormGroup) => {
+                console.log('form received', form);
+                this.entityForm = form;
+                this.loading = false;
+            });
+
     }
 
     protected abstract emptyEntity(): T;
 
-    protected abstract initEntityForm(): FormGroup;
+    protected abstract initEntityForm(): Observable<FormGroup>;
 
     protected onSubmit() {
         this.mapFormToEntity();

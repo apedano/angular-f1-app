@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CarFormComponent } from './car/car-form/car-form.component';
+import { CarListComponent } from './car/car-list/car-list.component';
 import { DriverFormComponent } from './driver/driver-form/driver-form.component';
 import { TeamFormComponent } from './team/team-form/team-form.component';
 import { TrackFormComponent } from './track/track-form/track-form.component';
@@ -13,6 +15,15 @@ const routes: Routes = [
       { path: 'new', component: TrackFormComponent }, //we put it before the id so it will have precedence in the parse of the route
       // { path: ':id', component: TeamFormComponent },
       { path: ':id/edit', component: TrackFormComponent }
+    ]
+  },
+  {
+    path: 'cars', children: [
+      { path: '', component: CarListComponent },
+      { path: 'new', component: CarFormComponent }, //we put it before the id so it will have precedence in the parse of the route\
+      { path: ':id/edit', component: CarFormComponent }
+      // { path: ':id', component: TeamFormComponent },
+
     ]
   },
   {

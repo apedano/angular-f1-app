@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpEventType } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { map, Observable } from "rxjs";
 import { GenericService } from "../shared/generic.service";
 import { Team } from "./team.model";
 
@@ -23,6 +24,12 @@ export class TeamsService extends GenericService<Team> {
 
     protected getApiPath(): string {
         return 'teams';
+    }
+
+    public getBylogoName(logoName: string): Observable<Team> {
+        return this.getByFilter((t: Team) => t.logoName == logoName).pipe(
+            map((teamArray: Team[]) => teamArray[0])
+        );
     }
 
     // readonly TEAMS_URL: string = 'https://angular-tutorial-rest-api-default-rtdb.europe-west1.firebasedatabase.app/teams.json';

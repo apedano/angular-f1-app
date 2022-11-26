@@ -13,4 +13,8 @@ export class Team implements IdEntity {
     empty(): IdEntity {
         return new Team();
     }
+
+    get logoUrl() {
+        return 'assets/img/teams/' + this.logoName + '.jpg'
+    }
 }

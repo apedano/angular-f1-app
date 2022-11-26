@@ -1,0 +1,16 @@
+<p-dataView [value]="entities" [loading]="isLoading">
+    <ng-template pTemplate="header">
+        <h4>Cars</h4>
+
+    </ng-template>
+    <ng-template let-car pTemplate="listItem">
+        <app-car-item [car]="car" style="margin: 1em"></app-car-item>
+
+    </ng-template>
+    <!-- <ng-template let-team pTemplate="gridItem">
+        <div class="col-12 md:col-3">
+            {{team.logo}}
+        </div>
+    </ng-template> -->
+    <!-- <ng-template pTemplate="footer">Choose from the list.</ng-template> -->
+</p-dataView>

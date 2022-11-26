@@ -1,0 +1,89 @@
+<div *ngIf="loading">Loading...</div>
+<form (ngSubmit)="onSubmit()" [formGroup]="entityForm" *ngIf="!loading">
+    <h4>New car</h4>
+    <div class="form-grid">
+        <div class="card">
+            <div class="p-fluid">
+                <p-dropdown formControlName="season" [options]="seasons" [showClear]="true"
+                    placeholder="Select a Season">
+                </p-dropdown>
+                <small id="name-invalid" class="p-error block"
+                    *ngIf="season?.touched && season?.errors?.['required']">Season
+                    is mandatory</small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="p-fluid">
+                <div class="p-field p-grid margin-top">
+                    <span class="p-float-label">
+                        <input pInputText formControlName="name">
+                        <label for="name">Name</label>
+                    </span>
+                    <small id="name-invalid" class="p-error block"
+                        *ngIf="name?.touched && name?.errors?.['minlength']">Name
+                        should be at least 3 chars long</small>
+                    <small id="name-invalid" class="p-error block"
+                        *ngIf="name?.touched && name?.errors?.['required']">Name
+                        is mandatory</small>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="p-fluid">
+                <p-dropdown [options]="teams" formControlName="team" optionLabel="name" [filter]="true" filterBy="name"
+                    [showClear]="true" placeholder="Select a Team">
+                    <ng-template pTemplate="selectedItem">
+                        <div class="grid" *ngIf="team?.value">
+                            <div class="col">
+                                <img [src]="'assets/img/teams/' + team?.value?.logoName + '.jpg'"
+                                    style="max-width: 50px;" />
+                            </div>
+                            <div class="col">
+                                <span>{{team?.value?.name}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-carItem pTemplate="item">
+                        <div class="grid">
+                            <div class="col">
+                                <img [src]="'assets/img/teams/' + carItem?.logoName + '.jpg'"
+                                    style="max-width: 50px;" />
+                            </div>
+                            <div class="col">
+                                <span>{{carItem?.name}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small id="name-invalid" class="p-error block" *ngIf="team?.touched && team?.errors?.['required']">Team
+                    is mandatory</small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="p-fluid">
+                <div class="p-field p-grid margin-top">
+                    <span class="p-float-label">
+                        <input pInputText formControlName="powerUnit">
+                        <label for="powerUnit">Power unit</label>
+                    </span>
+                    <small id="powerUnit-invalid" class="p-error block"
+                        *ngIf="powerUnit?.touched && powerUnit?.errors?.['minlength']">Power unit
+                        should be at least 3 chars long</small>
+                    <small id="powerUnit-invalid" class="p-error block"
+                        *ngIf="powerUnit?.touched && powerUnit?.errors?.['required']">Power unit
+                        is mandatory</small>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="p-fluid">
+                <app-asset-image-selector formControlName="imageName" [urlPartsArray]="[['assets/img/cars/', '.png']]">
+                </app-asset-image-selector>
+                <small class="p-error block" *ngIf="imageName?.errors?.['required']">
+                    Car image is required
+                </small>
+            </div>
+        </div>
+        <button pButton type="submit" [disabled]="!entityForm.valid" label="Save"></button>
+    </div>
+</form>

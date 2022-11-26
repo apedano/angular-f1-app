@@ -3,7 +3,7 @@ import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Team } from '../team.model';
 import { TeamsService } from '../team.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 import { GenericFormComponent } from '../../shared/generic-form.component'
 
 @Component({
@@ -22,14 +22,14 @@ export class TeamFormComponent extends GenericFormComponent<Team> implements OnI
     return new Team();
   }
 
-  protected initEntityForm(): FormGroup<any> {
-    return new FormGroup({
+  protected initEntityForm(): Observable<FormGroup<any>> {
+    return of(new FormGroup({
       name: new FormControl(this.entity.name!,
         [Validators.required, Validators.minLength(3)]),
       foundation: new FormControl(this.entity.foundation, [Validators.required]),
       logo: new FormControl(this.entity.logoName!, [Validators.required]),
       country: new FormControl(this.entity.nationality, Validators.required)
-    });
+    }))
   }
   protected mapFormToEntity(): void {
     //FIXME: use the existing this.team instead

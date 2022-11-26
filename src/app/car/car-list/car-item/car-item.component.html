@@ -1,0 +1,38 @@
+<p-card>
+    <ng-template pTemplate="header">
+        <b>{{car.name}}</b> - <i>{{car.season}}</i>
+    </ng-template>
+    <div class="card">
+        <div class="flex flex-row flex-wrap card-container">
+            <div
+                class="shadow-2 bg-cyan-500 surface-hover flex align-items-center justify-content-center w-16rem h-10rem font-bold text-white border-round m-2">
+                <img id="logo" style="max-width: 250px; max-height: 250px;"
+                    [src]="'assets/img/cars/' + car.imageName + '.png'" />
+            </div>
+            <div *ngIf="teamObs | async as team; else loading"
+                class="shadow-2 bg-cyan-500 surface-hover flex align-items-center justify-content-center w-6rem h-6rem font-bold text-white border-round m-2">
+                <img class="surface-overlay surface-300" id="flag" style="max-width: 80px; max-height: 80px;"
+                    [src]="team.logoUrl" (click)='onTeamClick(team)' />
+
+            </div>
+            <!-- <div
+                class="shadow-2 bg-cyan-500 surface-hover flex align-items-center justify-content-center w-6rem h-6rem font-bold text-white border-round m-2">
+                <img class="surface-overlay surface-300" id="flag" style="max-width: 80px; max-height: 80px;"
+                    [src]="(team | async)?.logoUrl" />
+
+            </div> -->
+        </div>
+    </div>
+    <div style="text-align: center">
+        PowerUnit: <b>{{car.powerUnit}}</b>
+    </div>
+    <ng-template pTemplate="footer">
+        <app-entity-toolbar (onEdit)="onEditTriggered()" (onDelete)="onDeleteTriggered()" [entityName]="car.name!"
+            style="padding: 1em;"></app-entity-toolbar>
+    </ng-template>
+</p-card>
+
+
+<ng-template #loading>
+    <div>Loading ...</div>
+</ng-template>

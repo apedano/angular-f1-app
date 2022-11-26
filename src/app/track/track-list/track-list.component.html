@@ -21,8 +21,7 @@
             <td><img [src]="'assets/svg-country-flags/svg/' + track.country.alpha2Code.toLowerCase() + '.svg'"
                     [alt]="track.country.name" width="50" class="shadow-4" /></td>
             <td>{{track.country.name}}</td>
-            <td><img [src]="'assets/img/tracks/' + track.imageName + '_small.png'" [alt]="track.country.name"
-                    width="100" class="shadow-4" /></td>
+            <td><img [src]="track.smallImageUrl" [alt]="track.country.name" width="100" class="shadow-4" /></td>
 
             <td>{{track.length}} Km</td>
             <td>{{track.firstYear}}</td>

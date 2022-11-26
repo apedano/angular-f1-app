@@ -39,10 +39,10 @@ export class MainMenuComponent implements OnInit {
         ]
       },
       {
-        label: 'Drivers',
+        label: 'Cars',
         items: [
-          { label: 'All', icon: 'pi pi-fw pi-bars', routerLink: "/drivers/" },
-          { label: 'New', icon: 'pi pi-fw pi-plus', routerLink: "/tracks/new" }
+          { label: 'All', icon: 'pi pi-fw pi-bars', routerLink: "/cars/" },
+          { label: 'New', icon: 'pi pi-fw pi-plus', routerLink: "/cars/new" }
         ]
       },
       {

@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
-import { BehaviorSubject, catchError, map, Observable, Observer, skip, Subject, Subscription, take, throwError } from "rxjs";
+import { Predicate } from "@angular/core";
+import { BehaviorSubject, catchError, map, Observable, Observer, of, skip, skipWhile, Subject, Subscription, take, throwError } from "rxjs";
 import { IdEntity } from "./id-entity.model";
 
 export abstract class GenericService<T extends IdEntity> {
@@ -7,35 +8,12 @@ export abstract class GenericService<T extends IdEntity> {
     readonly FIREBASE_BASE_URL: string = 'https://angular-tutorial-rest-api-default-rtdb.europe-west1.firebasedatabase.app/';
 
     public errorSubject: Subject<string> = new Subject();
-    public allValuesSubject: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
+    private allValuesSubject: BehaviorSubject<T[] | null> = new BehaviorSubject<T[] | null>(null);
+
     isAllValueSubjectCalledAlready: boolean = false;
 
     constructor(private httpClient: HttpClient) {
         this.refreshVallValues();
-    }
-
-    protected abstract getApiPath(): string;
-
-    protected getApiFullUrl(): string {
-        return this.FIREBASE_BASE_URL + this.getApiPath()
-    }
-
-    fetchAllSubscription!: Subscription;
-    private fetchAllObserver: Partial<Observer<T[]>> = {
-        next: allValues => {
-            this.allValuesSubject.next(allValues);
-            this.isAllValueSubjectCalledAlready = true;
-        },
-        error: err => {
-            const errorInstance = <HttpErrorResponse>err;
-            console.log(errorInstance);
-        }
-    };
-
-
-    protected refreshVallValues() {
-        this.fetchAllSubscription?.unsubscribe();
-        this.fetchAllSubscription = this.fetchAll().subscribe(this.fetchAllObserver);
     }
 
     public createOrUpdate(obj: T): Observable<HttpResponse<{ name: string }>> {
@@ -63,17 +41,59 @@ export abstract class GenericService<T extends IdEntity> {
     }
 
     public getById(id: string): Observable<T> {
-        let skipN = 0;
-        if (!this.isAllValueSubjectCalledAlready) {
-            //the subject will emit the intial empty value first
-            this.isAllValueSubjectCalledAlready = true;
-            skipN = 1;
-        }
-        return this.allValuesSubject.pipe(
-            skip(skipN),
-            map((values: T[]) => values.filter(v => v.id === id)[0]),
-        )
+        return this.getByFilter((t: T) => t.id === id)
+            .pipe(map(array => array[0]));
+    }
 
+    public getAll(): Observable<T[]> {
+        return this.getByFilter(v => true);
+    }
+
+
+    public delete(entity: T): Observable<any> {
+        return this.httpClient.delete(this.getApiFullUrl() + '/' + entity['id'] + '.json')
+            .pipe(map(() => {
+                this.refreshVallValues();
+            }),
+                catchError(errorRes => {
+                    //error handling code goes here
+                    //here we return the observable sending the error 
+                    //to the subscribers
+                    return throwError(() => errorRes);
+                }));
+    }
+
+    protected abstract getApiPath(): string;
+
+    protected getApiFullUrl(): string {
+        return this.FIREBASE_BASE_URL + this.getApiPath()
+    }
+
+    fetchAllSubscription!: Subscription;
+    private fetchAllObserver: Partial<Observer<T[]>> = {
+        next: allValues => {
+            this.allValuesSubject.next(allValues);
+            this.isAllValueSubjectCalledAlready = true;
+        },
+        error: err => {
+            const errorInstance = <HttpErrorResponse>err;
+            console.log(errorInstance);
+        }
+    };
+
+
+    protected refreshVallValues() {
+        this.fetchAllSubscription?.unsubscribe();
+        this.fetchAllSubscription = this.fetchAll().subscribe(this.fetchAllObserver);
+    }
+
+
+
+    protected getByFilter(filter: Predicate<T>): Observable<T[]> {
+        return this.allValuesSubject.pipe(
+            skipWhile((v: any) => v === null),
+            map((values: T[]) => values.filter(filter))
+        )
     }
 
     private fetchAll(): Observable<T[]> {
@@ -98,18 +118,7 @@ export abstract class GenericService<T extends IdEntity> {
             );
     }
 
-    public delete(entity: T): Observable<any> {
-        return this.httpClient.delete(this.getApiFullUrl() + '/' + entity.id + '.json')
-            .pipe(map(() => {
-                this.refreshVallValues();
-            }),
-                catchError(errorRes => {
-                    //error handling code goes here
-                    //here we return the observable sending the error 
-                    //to the subscribers
-                    return throwError(() => errorRes);
-                }));
-    }
+
 
     protected abstract mapToEntity(id: string, reponseData: any): T;
 

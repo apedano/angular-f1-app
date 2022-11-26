@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subscription } from "rxjs";
+import { map, Observable, of, Subscription } from "rxjs";
 import { GenericService } from "./generic.service";
 import { IdEntity } from "./id-entity.model";
 
@@ -10,20 +10,41 @@ export abstract class GenericListComponent<T extends IdEntity> implements OnInit
 
     entities: T[] = [];
     loading: boolean = true;
-    teamsSubscription!: Subscription;
+    entitiesSubscription!: Subscription;
 
     constructor(protected entityService: GenericService<T>) { }
 
 
     ngOnDestroy(): void {
-        this.teamsSubscription.unsubscribe();
+        this.entitiesSubscription.unsubscribe();
+        this.onDestroy();
+    }
+
+    protected onDestroy(): void {
     }
 
     ngOnInit(): void {
-        this.teamsSubscription = this.entityService.allValuesSubject.subscribe(entityArray => {
-            this.entities = entityArray;
-            this.loading = false;
-            console.log(this.entities);
-        });
+        this.entitiesSubscription = this.entityService.getAll()
+            .pipe(
+                map((entityArray: T[]) => {
+                    this.entities = entityArray;
+                }))
+            .subscribe(() => {
+                this.onEntitiesLoaded();
+                this.loading = false;
+            });
     }
+
+    protected onEntitiesLoading(): any {
+        return true;
+    };
+
+    protected onEntitiesLoaded(): void { };
+
 }
+
+
+
+
+
+

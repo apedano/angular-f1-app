@@ -22,7 +22,7 @@ export class TeamItemComponent implements OnInit {
   ngOnInit(): void {
     this.teamAlpha2Code = this.team.nationality?.alpha2Code;
     this.flagUrlTemplate = 'assets/svg-country-flags/svg/' + this.team.nationality?.alpha2Code.toLowerCase() + '.svg';
-    this.logoUrlTemplate = 'assets/img/teams/' + this.team.logoName! + '.jpg';
+    this.logoUrlTemplate = this.team.logoUrl;
   }
 
   onEditTriggered() {
